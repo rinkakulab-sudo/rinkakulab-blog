@@ -458,6 +458,52 @@
   margin-top: 8px;
 }
 
+.post-single .post-title {
+  font-size: clamp(1.95rem, 3.6vw, 2.55rem);
+  line-height: 1.28;
+  margin-bottom: 6px;
+}
+
+.post-single .post-meta,
+.post-single .breadcrumbs {
+  font-size: 13px;
+}
+
+.post-single .post-content {
+  font-size: 0.97rem;
+  line-height: 1.86;
+  margin: 24px 0;
+}
+
+.post-single .post-content h1 {
+  font-size: 1.95rem;
+  margin: 34px auto 24px;
+}
+
+.post-single .post-content h2 {
+  font-size: 1.58rem;
+  margin: 28px auto 20px;
+}
+
+.post-single .post-content h3 {
+  font-size: 1.28rem;
+  margin: 22px 0 14px;
+}
+
+.post-single .post-content h4 {
+  font-size: 1.04rem;
+}
+
+.post-single .post-content p,
+.post-single .post-content li {
+  line-height: 1.9;
+}
+
+.post-single .post-tags a {
+  font-size: 13px;
+  line-height: 32px;
+}
+
 .paginav {
   display: flex;
   gap: 10px;
@@ -628,6 +674,28 @@
   .paginav a {
     width: 100%;
     min-height: 92px;
+  }
+
+  .post-single .post-title {
+    font-size: clamp(1.68rem, 7vw, 2.06rem);
+    line-height: 1.32;
+  }
+
+  .post-single .post-content {
+    font-size: 0.94rem;
+    line-height: 1.82;
+  }
+
+  .post-single .post-content h1 {
+    font-size: 1.68rem;
+  }
+
+  .post-single .post-content h2 {
+    font-size: 1.4rem;
+  }
+
+  .post-single .post-content h3 {
+    font-size: 1.16rem;
   }
 }
 
