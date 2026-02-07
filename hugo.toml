@@ -12,6 +12,8 @@ theme = "PaperMod"
 [params]
   description = "世界に輪郭を。定義・境界・制約で概念を道具化するメディア。"
   defaultTheme = "light"
+  disableThemeToggle = true
+  disableSpecial1stPost = true
   ShowReadingTime = true
   ShowShareButtons = false
   ShowBreadCrumbs = true
@@ -20,11 +22,11 @@ theme = "PaperMod"
   mainSections = ["posts"]
 
 [params.assets]
-  favicon = "favicon.svg"
-  favicon16x16 = "favicon-16x16.png"
-  favicon32x32 = "favicon-32x32.png"
-  apple_touch_icon = "apple-touch-icon.png"
-  safari_pinned_tab = "safari-pinned-tab.svg"
+  favicon = "rk-favicon.svg"
+  favicon16x16 = "rk-favicon-16x16.png"
+  favicon32x32 = "rk-favicon-32x32.png"
+  apple_touch_icon = "rk-apple-touch-icon.png"
+  safari_pinned_tab = "rk-safari-pinned-tab.svg"
   theme_color = "#111318"
   msapplication_TileColor = "#111318"
 

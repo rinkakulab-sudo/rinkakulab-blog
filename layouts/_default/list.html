@@ -40,7 +40,10 @@
 {{- if and .IsHome (eq $paginator.PageNumber 1) }}
 <section class="rk-hero" aria-label="輪郭ラボの紹介">
   <div class="rk-hero-main">
-    <img class="rk-wordmark" src="{{ "images/rinkakulab-wordmark.svg" | relURL }}" alt="輪郭ラボ">
+    <div class="rk-title-row" aria-label="輪郭ラボ 世界に輪郭を。">
+      <span class="rk-title-box">輪郭ラボ</span>
+      <span class="rk-title-copy">世界に輪郭を。</span>
+    </div>
     <p class="rk-lead">世界に輪郭を。曖昧な言葉を、定義・境界・制約で判断可能な思考ツールへ。</p>
     <div class="rk-actions">
       <a class="rk-btn rk-btn-primary" href="{{ "search" | relURL }}">記事を検索する</a>
@@ -93,11 +96,11 @@
     <button type="button" class="home-clear-btn" id="home-clear-filter">条件をクリア</button>
   </div>
 
-  <div class="home-tools-row">
+  <div class="home-tools-row is-search-row">
     <input id="home-search-input" type="search" placeholder="キーワードで検索（タイトル・要約・タグ・カテゴリ）" autocomplete="off">
   </div>
 
-  <div class="home-tools-row">
+  <div class="home-tools-row is-labeled-row">
     <span class="home-filter-label">タグ</span>
     <div class="home-tag-filters" role="group" aria-label="タグフィルター">
       <button type="button" class="is-active" data-tag="all">すべて</button>
@@ -109,7 +112,7 @@
     </div>
   </div>
 
-  <div class="home-tools-row">
+  <div class="home-tools-row is-labeled-row">
     <span class="home-filter-label">カテゴリ</span>
     <div class="home-category-filters" role="group" aria-label="カテゴリフィルター">
       <button type="button" class="is-active" data-category="all">すべて</button>
