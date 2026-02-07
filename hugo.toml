@@ -1,9 +1,10 @@
 baseURL = "https://rinkakulab-e9817.web.app/"
 languageCode = "ja"
-title = "仮ブログ"
+title = "輪郭ラボ"
 theme = "PaperMod"
 
 [params]
+  description = "世界に輪郭を。定義・境界・制約で概念を道具化するメディア。"
   ShowReadingTime = true
   ShowShareButtons = false
   ShowBreadCrumbs = true
