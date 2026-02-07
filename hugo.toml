@@ -3,8 +3,68 @@ languageCode = "ja"
 title = "輪郭ラボ"
 theme = "PaperMod"
 
+[pagination]
+  pagerSize = 12
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
 [params]
   description = "世界に輪郭を。定義・境界・制約で概念を道具化するメディア。"
+  defaultTheme = "light"
   ShowReadingTime = true
   ShowShareButtons = false
   ShowBreadCrumbs = true
+  ShowPostNavLinks = true
+  ShowCodeCopyButtons = true
+  mainSections = ["posts"]
+
+[params.assets]
+  favicon = "favicon.svg"
+  favicon16x16 = "favicon-16x16.png"
+  favicon32x32 = "favicon-32x32.png"
+  apple_touch_icon = "apple-touch-icon.png"
+  safari_pinned_tab = "safari-pinned-tab.svg"
+  theme_color = "#111318"
+  msapplication_TileColor = "#111318"
+
+[params.label]
+  text = "輪郭ラボ"
+  icon = "/images/rinkakulab-mark.svg"
+  iconHeight = 26
+
+[params.fuseOpts]
+  isCaseSensitive = false
+  shouldSort = true
+  includeMatches = true
+  findAllMatches = true
+  minMatchCharLength = 2
+  location = 0
+  distance = 1000
+  threshold = 0.3
+  ignoreLocation = true
+  keys = ["title", "permalink", "summary", "content"]
+
+[[menu.main]]
+  identifier = "search"
+  name = "検索"
+  url = "/search/"
+  weight = 10
+
+[[menu.main]]
+  identifier = "tags"
+  name = "タグ"
+  url = "/tags/"
+  weight = 20
+
+[[menu.main]]
+  identifier = "categories"
+  name = "カテゴリ"
+  url = "/categories/"
+  weight = 30
+
+[[menu.main]]
+  identifier = "archives"
+  name = "アーカイブ"
+  url = "/archives/"
+  weight = 40

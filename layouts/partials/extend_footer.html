@@ -4,14 +4,50 @@
   if (!tools) return;
 
   const searchInput = document.getElementById("home-search-input");
+  const clearButton = document.getElementById("home-clear-filter");
   const tagButtons = Array.from(tools.querySelectorAll(".home-tag-filters button"));
+  const categoryButtons = Array.from(tools.querySelectorAll(".home-category-filters button"));
   const emptyState = tools.querySelector(".home-filter-empty");
+  const countEl = document.getElementById("home-filter-count");
   const posts = Array.from(document.querySelectorAll("article[data-search]"));
 
-  let activeTag = "all";
+  const url = new URL(window.location.href);
+  let activeTag = url.searchParams.get("tag") || "all";
+  let activeCategory = url.searchParams.get("category") || "all";
 
   function normalize(text) {
     return (text || "").toLowerCase().trim();
+  }
+
+  function matchDataset(post, key, expected) {
+    if (expected === "all") return true;
+    const values = (post.dataset[key] || "").split(",").filter(Boolean);
+    return values.includes(expected);
+  }
+
+  function setActive(buttons, key, value) {
+    let found = false;
+    buttons.forEach((button) => {
+      const isActive = (button.dataset[key] || "all") === value;
+      button.classList.toggle("is-active", isActive);
+      if (isActive) found = true;
+    });
+
+    if (!found) {
+      value = "all";
+      buttons.forEach((button) => {
+        button.classList.toggle("is-active", (button.dataset[key] || "all") === "all");
+      });
+    }
+    return value;
+  }
+
+  function syncUrl(query) {
+    const next = new URL(window.location.href);
+    if (query) next.searchParams.set("q", query); else next.searchParams.delete("q");
+    if (activeTag !== "all") next.searchParams.set("tag", activeTag); else next.searchParams.delete("tag");
+    if (activeCategory !== "all") next.searchParams.set("category", activeCategory); else next.searchParams.delete("category");
+    window.history.replaceState({}, "", `${next.pathname}${next.search}`);
   }
 
   function applyFilter() {
@@ -20,32 +56,84 @@
 
     posts.forEach((post) => {
       const searchText = normalize(post.dataset.search);
-      const tags = (post.dataset.tags || "").split(",").filter(Boolean);
       const matchQuery = !query || searchText.includes(query);
-      const matchTag = activeTag === "all" || tags.includes(activeTag);
-      const visible = matchQuery && matchTag;
+      const matchTag = matchDataset(post, "tags", activeTag);
+      const matchCategory = matchDataset(post, "categories", activeCategory);
+      const visible = matchQuery && matchTag && matchCategory;
       post.hidden = !visible;
       if (visible) visibleCount += 1;
     });
 
-    if (emptyState) {
-      emptyState.hidden = visibleCount !== 0;
-    }
+    if (countEl) countEl.textContent = String(visibleCount);
+    if (emptyState) emptyState.hidden = visibleCount > 0;
+
+    try {
+      window.sessionStorage.setItem("rk-home-query", query);
+    } catch (_) {}
+
+    syncUrl(query);
+  }
+
+  function activateTag(tag) {
+    activeTag = setActive(tagButtons, "tag", tag);
+    applyFilter();
+  }
+
+  function activateCategory(category) {
+    activeCategory = setActive(categoryButtons, "category", category);
+    applyFilter();
   }
 
   tagButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      activeTag = button.dataset.tag || "all";
-      tagButtons.forEach((btn) => btn.classList.remove("is-active"));
-      button.classList.add("is-active");
-      applyFilter();
-    });
+    button.addEventListener("click", () => activateTag(button.dataset.tag || "all"));
+  });
+
+  categoryButtons.forEach((button) => {
+    button.addEventListener("click", () => activateCategory(button.dataset.category || "all"));
   });
 
   if (searchInput) {
+    const urlQuery = url.searchParams.get("q");
+    if (urlQuery) {
+      searchInput.value = urlQuery;
+    } else {
+      try {
+        const cached = window.sessionStorage.getItem("rk-home-query");
+        if (cached) searchInput.value = cached;
+      } catch (_) {}
+    }
+
     searchInput.addEventListener("input", applyFilter);
   }
 
+  if (clearButton) {
+    clearButton.addEventListener("click", () => {
+      if (searchInput) searchInput.value = "";
+      activeTag = "all";
+      activeCategory = "all";
+      setActive(tagButtons, "tag", "all");
+      setActive(categoryButtons, "category", "all");
+      applyFilter();
+      if (searchInput) searchInput.focus();
+    });
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (!searchInput) return;
+    const isTypingElement = ["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName);
+
+    if (event.key === "/" && !isTypingElement) {
+      event.preventDefault();
+      searchInput.focus();
+    }
+
+    if (event.key === "Escape" && document.activeElement === searchInput) {
+      searchInput.blur();
+    }
+  });
+
+  activeTag = setActive(tagButtons, "tag", activeTag);
+  activeCategory = setActive(categoryButtons, "category", activeCategory);
   applyFilter();
 })();
 </script>

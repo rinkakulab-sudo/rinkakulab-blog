@@ -2,7 +2,7 @@
 
 {{- if (and site.Params.profileMode.enabled .IsHome) }}
 {{- partial "index_profile.html" . }}
-{{- else }} {{/* if not profileMode */}}
+{{- else }}
 
 {{- if not .IsHome | and .Title }}
 <header class="page-header">
@@ -30,7 +30,100 @@
 </header>
 {{- end }}
 
+{{- $pages := union .RegularPages .Sections }}
+{{- if .IsHome }}
+{{- $pages = where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true" }}
+{{- end }}
+{{- $paginator := .Paginate $pages }}
+
+{{- if and .IsHome (eq $paginator.PageNumber 1) }}
+<section class="rk-hero" aria-label="輪郭ラボの紹介">
+  <div class="rk-hero-main">
+    <img class="rk-wordmark" src="{{ "images/rinkakulab-wordmark.svg" | relURL }}" alt="輪郭ラボ">
+    <p class="rk-lead">世界に輪郭を。曖昧な言葉を、定義・境界・制約で判断可能な思考ツールへ。</p>
+    <div class="rk-actions">
+      <a class="rk-btn rk-btn-primary" href="{{ "search" | relURL }}">記事を検索する</a>
+      <a class="rk-btn" href="{{ "tags" | relURL }}">タグから探す</a>
+    </div>
+  </div>
+  <ul class="rk-hero-stats" aria-label="サイト概要">
+    <li><span>{{ len $pages }}</span> 本の記事</li>
+    <li><span>{{ len site.Taxonomies.tags }}</span> 個のタグ</li>
+    <li><span>{{ len site.Taxonomies.categories }}</span> 区分のカテゴリ</li>
+  </ul>
+</section>
+
+<section class="rk-pillars" aria-label="輪郭ラボの視点">
+  <article>
+    <h3>1. 境界</h3>
+    <p>それは何か、何ではないかを先に定義する。</p>
+  </article>
+  <article>
+    <h3>2. 制約</h3>
+    <p>成り立つ条件と破綻条件を明示する。</p>
+  </article>
+  <article>
+    <h3>3. 切り分け</h3>
+    <p>似た概念との違いを比較軸で確定する。</p>
+  </article>
+  <article>
+    <h3>4. 判断</h3>
+    <p>何が予測・判断できるかまで接続する。</p>
+  </article>
+</section>
+
 {{- if .Content }}
+<details class="rk-manifesto">
+  <summary>輪郭ラボの編集方針を読む</summary>
+  <div class="post-content">
+    {{- if not (.Param "disableAnchoredHeadings") }}
+    {{- partial "anchored_headings.html" .Content -}}
+    {{- else }}{{ .Content }}{{ end }}
+  </div>
+</details>
+{{- end }}
+
+<section class="home-tools" data-home-filter>
+  <div class="home-tools-header">
+    <div>
+      <div class="home-tools-title">記事を探す</div>
+      <p class="home-filter-meta"><span id="home-filter-count">{{ len $paginator.Pages }}</span>件を表示中</p>
+    </div>
+    <button type="button" class="home-clear-btn" id="home-clear-filter">条件をクリア</button>
+  </div>
+
+  <div class="home-tools-row">
+    <input id="home-search-input" type="search" placeholder="キーワードで検索（タイトル・要約・タグ・カテゴリ）" autocomplete="off">
+  </div>
+
+  <div class="home-tools-row">
+    <span class="home-filter-label">タグ</span>
+    <div class="home-tag-filters" role="group" aria-label="タグフィルター">
+      <button type="button" class="is-active" data-tag="all">すべて</button>
+      {{- with site.Taxonomies.tags.ByCount }}
+      {{- range . }}
+      <button type="button" data-tag="{{ .Name | urlize }}">{{ .Name }} <span>{{ .Count }}</span></button>
+      {{- end }}
+      {{- end }}
+    </div>
+  </div>
+
+  <div class="home-tools-row">
+    <span class="home-filter-label">カテゴリ</span>
+    <div class="home-category-filters" role="group" aria-label="カテゴリフィルター">
+      <button type="button" class="is-active" data-category="all">すべて</button>
+      {{- with site.Taxonomies.categories.ByCount }}
+      {{- range . }}
+      <button type="button" data-category="{{ .Name | urlize }}">{{ .Name }} <span>{{ .Count }}</span></button>
+      {{- end }}
+      {{- end }}
+    </div>
+  </div>
+
+  <p class="home-filter-empty" hidden>該当する記事がありません。条件を緩めて再検索してください。</p>
+</section>
+{{- else if .Content }}
 <div class="post-content">
   {{- if not (.Param "disableAnchoredHeadings") }}
   {{- partial "anchored_headings.html" .Content -}}
@@ -38,46 +131,13 @@
 </div>
 {{- end }}
 
-{{- $pages := union .RegularPages .Sections }}
-
-{{- if .IsHome }}
-{{- $pages = where site.RegularPages "Type" "in" site.Params.mainSections }}
-{{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true"  }}
-{{- end }}
-
-{{- $paginator := .Paginate $pages }}
-
 {{- if and .IsHome site.Params.homeInfoParams (eq $paginator.PageNumber 1) }}
 {{- partial "home_info.html" . }}
 {{- end }}
 
-{{- if and .IsHome (eq $paginator.PageNumber 1) }}
-<section class="home-hero" aria-label="輪郭ラボ バナー">
-  <img src="{{ "images/rinkakulab-banner.svg" | relURL }}" alt="輪郭ラボ 世界に輪郭を。">
-</section>
-
-<section class="home-tools" data-home-filter>
-  <div class="home-tools-title">記事を探す</div>
-  <div class="home-tools-row">
-    <input id="home-search-input" type="search" placeholder="キーワードで検索（タイトル・要約・タグ）" autocomplete="off">
-  </div>
-  <div class="home-tools-row home-tag-filters" role="group" aria-label="タグフィルター">
-    <button type="button" class="is-active" data-tag="all">すべて</button>
-    {{- with site.Taxonomies.tags.ByCount }}
-    {{- range . }}
-    <button type="button" data-tag="{{ .Name | urlize }}">{{ .Name }} <span>{{ .Count }}</span></button>
-    {{- end }}
-    {{- end }}
-  </div>
-  <p class="home-filter-empty" hidden>該当する記事がありません。</p>
-</section>
-{{- end }}
-
 {{- $term := .Data.Term }}
 {{- range $index, $page := $paginator.Pages }}
-
 {{- $class := "post-entry" }}
-
 {{- $user_preferred := or site.Params.disableSpecial1stPost site.Params.homeInfoParams }}
 {{- if (and $.IsHome (eq $paginator.PageNumber 1) (eq $index 0) (not $user_preferred)) }}
 {{- $class = "first-entry" }}
@@ -86,12 +146,14 @@
 {{- end }}
 
 {{- $entryTags := .Params.tags | default (slice) }}
-{{- $tagSlugs := slice }}
-{{- range $entryTags }}
-{{- $tagSlugs = $tagSlugs | append (. | urlize) }}
-{{- end }}
-{{- $searchText := printf "%s %s %s" .Title (.Summary | plainify) (delimit $entryTags " ") | lower }}
-<article class="{{ $class }}" data-search="{{ $searchText | htmlEscape }}" data-tags="{{ delimit $tagSlugs "," }}">
+{{- $entryTagSlugs := slice }}
+{{- range $entryTags }}{{- $entryTagSlugs = $entryTagSlugs | append (. | urlize) }}{{- end }}
+{{- $entryCategories := .Params.categories | default (slice) }}
+{{- $entryCategorySlugs := slice }}
+{{- range $entryCategories }}{{- $entryCategorySlugs = $entryCategorySlugs | append (. | urlize) }}{{- end }}
+{{- $searchText := printf "%s %s %s %s" .Title (.Summary | plainify) (delimit $entryTags " ") (delimit $entryCategories " ") | lower }}
+
+<article class="{{ $class }}" data-search="{{ $searchText | htmlEscape }}" data-tags="{{ delimit $entryTagSlugs "," }}" data-categories="{{ delimit $entryCategorySlugs "," }}">
   {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
   {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
   <header class="entry-header">
@@ -100,25 +162,37 @@
       {{- if .Draft }}
       <span class="entry-hint" title="Draft">
         <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+          <path d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
         </svg>
       </span>
       {{- end }}
     </h2>
   </header>
+
   {{- if (ne (.Param "hideSummary") true) }}
   <div class="entry-content">
     <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
   </div>
   {{- end }}
-  {{- with .GetTerms "tags" }}
-  <div class="entry-tags">
-    {{- range . }}
-    <a class="entry-tag" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+
+  <div class="entry-taxonomies">
+    {{- with .GetTerms "categories" }}
+    <div class="entry-categories">
+      {{- range . }}
+      <a class="entry-category" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+      {{- end }}
+    </div>
+    {{- end }}
+
+    {{- with .GetTerms "tags" }}
+    <div class="entry-tags">
+      {{- range . }}
+      <a class="entry-tag" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+      {{- end }}
+    </div>
     {{- end }}
   </div>
-  {{- end }}
+
   {{- if not (.Param "hideMeta") }}
   <footer class="entry-footer">
     {{- partial "post_meta.html" . -}}
@@ -132,25 +206,14 @@
 <footer class="page-footer">
   <nav class="pagination">
     {{- if $paginator.HasPrev }}
-    <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">
-      «&nbsp;{{ i18n "prev_page" }}&nbsp;
-      {{- if (.Param "ShowPageNums") }}
-      {{- sub $paginator.PageNumber 1 }}/{{ $paginator.TotalPages }}
-      {{- end }}
-    </a>
+    <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">«&nbsp;{{ i18n "prev_page" }}&nbsp;</a>
     {{- end }}
     {{- if $paginator.HasNext }}
-    <a class="next" href="{{ $paginator.Next.URL | absURL }}">
-      {{- i18n "next_page" }}&nbsp;
-      {{- if (.Param "ShowPageNums") }}
-      {{- add 1 $paginator.PageNumber }}/{{ $paginator.TotalPages }}
-      {{- end }}&nbsp;»
-    </a>
+    <a class="next" href="{{ $paginator.Next.URL | absURL }}">{{- i18n "next_page" }}&nbsp;»</a>
     {{- end }}
   </nav>
 </footer>
 {{- end }}
 
-{{- end }}{{/* end profileMode */}}
-
-{{- end }}{{- /* end main */ -}}
+{{- end }}
+{{- end }}

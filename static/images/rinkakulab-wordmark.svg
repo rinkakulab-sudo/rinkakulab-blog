@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="280" viewBox="0 0 1200 280" role="img" aria-labelledby="title desc">
+  <title id="title">輪郭ラボ</title>
+  <desc id="desc">輪郭ラボ 世界に輪郭を。</desc>
+  <rect width="1200" height="280" fill="none"/>
+  <rect x="18" y="34" width="454" height="212" fill="none" stroke="#16181e" stroke-width="5"/>
+  <text x="245" y="172" text-anchor="middle" font-size="116" fill="#16181e" font-family="'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif">輪郭ラボ</text>
+  <text x="525" y="172" font-size="94" fill="#252834" font-family="'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif">世界に輪郭を。</text>
+</svg>

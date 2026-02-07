@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="輪郭ラボ">
+  <rect width="128" height="128" fill="#f2f3f5"/>
+  <rect x="8" y="8" width="112" height="112" rx="8" fill="none" stroke="#14161b" stroke-width="4"/>
+  <text x="64" y="82" text-anchor="middle" font-size="76" fill="#14161b" font-family="'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif">輪</text>
+</svg>
