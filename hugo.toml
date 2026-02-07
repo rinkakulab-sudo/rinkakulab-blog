@@ -1,0 +1,9 @@
+baseURL = "https://rinkakulab-e9817.web.app/"
+languageCode = "ja"
+title = "仮ブログ"
+theme = "PaperMod"
+
+[params]
+  ShowReadingTime = true
+  ShowShareButtons = false
+  ShowBreadCrumbs = true
