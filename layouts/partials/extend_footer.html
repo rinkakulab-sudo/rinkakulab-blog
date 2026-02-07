@@ -1,0 +1,51 @@
+<script>
+(function () {
+  const tools = document.querySelector("[data-home-filter]");
+  if (!tools) return;
+
+  const searchInput = document.getElementById("home-search-input");
+  const tagButtons = Array.from(tools.querySelectorAll(".home-tag-filters button"));
+  const emptyState = tools.querySelector(".home-filter-empty");
+  const posts = Array.from(document.querySelectorAll("article[data-search]"));
+
+  let activeTag = "all";
+
+  function normalize(text) {
+    return (text || "").toLowerCase().trim();
+  }
+
+  function applyFilter() {
+    const query = normalize(searchInput ? searchInput.value : "");
+    let visibleCount = 0;
+
+    posts.forEach((post) => {
+      const searchText = normalize(post.dataset.search);
+      const tags = (post.dataset.tags || "").split(",").filter(Boolean);
+      const matchQuery = !query || searchText.includes(query);
+      const matchTag = activeTag === "all" || tags.includes(activeTag);
+      const visible = matchQuery && matchTag;
+      post.hidden = !visible;
+      if (visible) visibleCount += 1;
+    });
+
+    if (emptyState) {
+      emptyState.hidden = visibleCount !== 0;
+    }
+  }
+
+  tagButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      activeTag = button.dataset.tag || "all";
+      tagButtons.forEach((btn) => btn.classList.remove("is-active"));
+      button.classList.add("is-active");
+      applyFilter();
+    });
+  });
+
+  if (searchInput) {
+    searchInput.addEventListener("input", applyFilter);
+  }
+
+  applyFilter();
+})();
+</script>

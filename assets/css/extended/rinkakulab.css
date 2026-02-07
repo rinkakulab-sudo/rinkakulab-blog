@@ -1,0 +1,123 @@
+.home-hero {
+  margin: 12px 0 28px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f4f4f6;
+}
+
+.home-hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.home-tools {
+  margin: 0 0 24px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(246, 246, 248, 0.86));
+}
+
+.home-tools-title {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  color: var(--secondary);
+}
+
+.home-tools-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#home-search-input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: var(--theme);
+  color: var(--primary);
+}
+
+#home-search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.home-tag-filters {
+  margin-top: 10px;
+}
+
+.home-tag-filters button {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--theme);
+  color: var(--secondary);
+  padding: 6px 12px;
+  font-size: 0.86rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.home-tag-filters button:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.home-tag-filters button.is-active {
+  background: #2f3137;
+  border-color: #2f3137;
+  color: #f7f7f8;
+}
+
+.home-tag-filters button span {
+  opacity: 0.75;
+}
+
+.home-filter-empty {
+  margin: 10px 2px 0;
+  color: var(--secondary);
+}
+
+.entry-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 2px;
+  position: relative;
+  z-index: 2;
+}
+
+.entry-tag {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 9px;
+  font-size: 0.78rem;
+  color: var(--secondary);
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.entry-tag:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.entry-footer {
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 720px) {
+  .home-tools {
+    padding: 12px;
+  }
+
+  .home-hero {
+    margin-top: 8px;
+    border-radius: 10px;
+  }
+}
